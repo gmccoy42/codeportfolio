@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-lg-offset-5 text-center">
+                <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+{% for item in stories %}
+ <div class="row-fluid">
+    <div class="bar span12">
+        <a class="link" id="s_link" href={{ item.story.link }} target="_blank">{{ item.story.title }}</a>
+    </div>
+    <div class="info span11">
+        <!-- This is bad --><p>{{ item.story.prettyDate }} &nbsp&nbsp {{ item.rank}} &nbsp&nbsp {{ item.story.site }}</p>
+    </div>
+    <div class="desc span11">
+        {{ item.story.description | safe }}
+    </div>
+</div>
+<br>
+<br>
+{% endfor %}
+{% if stories|first  == ""%}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-lg-offset-5 text-center">
+            <a href="/add/"><h2>Add some projects to get started!</h2></a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if user.is_authenticated %}
+<div class="pagination">
+    <span class="step-links">
+        {% if stories.has_previous %}
+            <a href="?page={{ stories.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ stories.number }} of {{ stories.paginator.num_pages }}.
+        </span>
+
+        {% if stories.has_next %}
+            <a href="?page={{ stories.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+{% else %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-lg-offset-5 text-center">
+            <div class="construction"> 
+                Under Construction
+            </div>
+           
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

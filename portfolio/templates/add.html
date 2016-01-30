@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+             <form method="POST" action="." class="col-centered">
+             {% csrf_token %}
+                  <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name">
+                  </div>
+                 <div class="form-group">
+                    <label for="language">Type:</label>
+                    <select class="form-control" id="type" name="type">
+                        <option>Snipit</option>
+                        <option>Link</option>
+                    </select>
+                   </div>
+                  <div class="form-group">
+                    <label for="language">Language (select up to 4):</label>
+                    <select multiple class="form-control" id="language" name="language">
+                        <option>HTML</option>
+                        <option>CSS</option>
+                        <option>JS</option>
+                    </select>
+                   </div>
+                  <div class="form-group">
+                    <label for="description">Description:</label>
+                      <textarea type="text" class="form-control" id="description" name="description"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="link">Link:</label>
+                    <input type="text" class="form-control" id="link" name="link">
+                  </div>
+                  <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+            <br>
+            <div class="alert alert-success" role="alert" id="success">Succesfully Added Project</div>
+            <div class="alert alert-danger hidden" role="alert" id="fail">Failed to Add Project</div>
+        </div>
+    </div>
+
+<div class="table-responsive">
+	<table class="table">
+        {% comment %}
+		<thead>
+		  <tr>
+		    <th>Name</th>
+		    <th>Language</th>
+		  </tr>
+		</thead>
+		<tbody>
+		{% for site in sites %}
+		  <tr>
+		    <td>{{ site.name }}</td>
+		    <td>{{ site.language }}</td>
+		    <td>
+		    	<form action="/delete/" method="post" id="{{ site.id }}">
+		    		{% csrf_token %}
+		    		<input type="hidden" value="{{ site.id }}" name="deleteItem" id="deleteItem"> 
+		    		<input type="hidden" value="site" name="loc" id="loc"> 
+			    	<button type="submit" class="btn btn-danger delete">
+			    		<span class="glyphicon glyphicon-remove" aria-hidden="true" hidden={{ site.id }}></span>
+			    	</button>
+				</form>
+		    </td>
+		  </tr>
+		{% endfor %}
+		</tbody>
+        {% endcomment %}
+	</table>
+</div>
+
+{% endblock %}
